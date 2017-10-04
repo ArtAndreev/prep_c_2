@@ -26,7 +26,6 @@ typedef struct Matrix {
 } Matrix;
 
 int create_matrix(Matrix* matr, size_t rows, size_t cols);
-// const keyword usability
 double get_elem(Matrix* matr, size_t row, size_t col);
 int set_elem(Matrix* matr, size_t row, size_t col, double data);
 int print_matrix(Matrix* matr);

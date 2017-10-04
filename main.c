@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "matrix.h"
 
@@ -62,6 +63,7 @@ int do_program(int argc, char** argv) {
     if ((error_code = free_matrices(matrices, count))) {
         return error_code;
     }
+    free_matrix(&result_matr);
 
     return 0;
 }
@@ -83,6 +85,9 @@ int open_files(int argc, char** argv, FILE** files) {
 }
 
 int read_matrices(FILE** files, Matrix* matrices, size_t count) {
+    for (size_t i = 0; i < count; i++) {
+        matrices[i].buffer = NULL;
+    }
     size_t rows_count = 0;
     size_t cols_count = 0;
     int error_code = 0;
@@ -121,14 +126,20 @@ int fill_matrix(FILE* file, Matrix* matr) {
 }
 
 int multiply(Matrix* matrices, size_t count, Matrix* result_matr) {
+    result_matr->buffer = NULL;
     int multiply_result = 0;
-    Matrix* prev = &matrices[0];
+    Matrix prev = matrices[0];
 
     for (size_t i = 1; i < count; i++) {
-        if ((multiply_result = multiply_matrices(prev, &matrices[i], result_matr))) {
+        if ((multiply_result = multiply_matrices(&prev, &matrices[i], result_matr))) {
             return multiply_result;
         }
-        *prev = *result_matr;
+       // prev = *result_matr;
+	memcpy(&prev, result_matr, sizeof(result_matr));
+        if (i < (count - 1)) {
+            free(result_matr->buffer);
+            result_matr->buffer = NULL;
+        }
     }
 
     return 0;
