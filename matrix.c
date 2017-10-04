@@ -12,10 +12,7 @@ void _sort_matrix(Matrix* matr);
 double _calc_multiply_element(Matrix* left, Matrix* right, size_t left_row, size_t right_col);
 
 int create_matrix(Matrix* matr, size_t rows, size_t cols) {
-    if (matr->buffer) {
-        free(matr->buffer);
-    }
-    if (/*!matr || */rows <= 0 || cols <= 0) {
+    if (!matr || rows <= 0 || cols <= 0) {
         printf("Wrong argument (-s). Cannot create matrix. Try again");
         return MATRIX_WRONG_ARGUMENT;
     }
@@ -119,7 +116,7 @@ int free_matrix(Matrix* matr) {
 }
 
 int multiply_matrices(Matrix* left, Matrix* right, Matrix* result) {
-    if (!left || !left->buffer || !right || !right->buffer/* || !result*/) {
+    if (!left || !left->buffer || !right || !right->buffer || !result) {
         printf("Wrong argument (-s). Cannot multiply matrices. Try again.");
         return MATRIX_WRONG_ARGUMENT;
     }

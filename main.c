@@ -52,7 +52,6 @@ int do_program(int argc, char** argv) {
     close_files(files, count);
 
     Matrix result_matr;
-    result_matr.buffer = NULL;
     if ((error_code = multiply(matrices, count, &result_matr))) {
         return error_code;
     }
@@ -84,9 +83,6 @@ int open_files(int argc, char** argv, FILE** files) {
 }
 
 int read_matrices(FILE** files, Matrix* matrices, size_t count) {
-    for (size_t i = 0; i < count; i++) {
-        matrices[i].buffer = NULL;
-    }
     size_t rows_count = 0;
     size_t cols_count = 0;
     int error_code = 0;
@@ -137,11 +133,6 @@ int multiply(Matrix* matrices, size_t count, Matrix* result_matr) {
 
     return 0;
 }
-
-
-
-
-
 
 int free_matrices(Matrix* matrices, size_t count) {
     int error_code = 0;
